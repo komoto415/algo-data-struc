@@ -48,30 +48,81 @@ class Node:
         self.left = None
         self.right = None
 
+    def __str__(self):
+        str = f"{self.key}\n"
+        if self.left:
+            str += f"{self.left.key}   "
+        else:
+            str += "   "
+        if self.right:
+            str += f"{self.right.key}   "
+        else:
+            str += "   "
+        return str
+
 class BinarySearchTree:
     def __init__(self):
         self.size = 0
         self.root = None
 
-    def insert(self, data):
+    def insert(self, ele):
         if self.size == 0:
-            self.root = data
+            self.root = ele
+            self.size += 1
             return
 
         current_node = None
         search_node = self.root
         while search_node is not None:
             current_node = search_node
-            if data.key < search_node.key:
+            if ele.key < search_node.key:
                 search_node = search_node.left
             else:
                 search_node = search_node.right
-        data.parent = current_node
-        if data.key < current_node.key:
-            current_node.left = data
+        ele.parent = current_node
+        if ele.key < current_node.key:
+            current_node.left = ele
         else:
-            current_node.right = data
+            current_node.right = ele
         self.size += 1
+
+    def delete(self, key):
+        ...
+
+    def contains(self, key):
+        if self.root is None:
+            return False
+        if key == self.root.key:
+            return True
+
+        search_node = self.root
+        while search_node is not None:
+            print(search_node)
+            if search_node.key == key:
+                return True
+            if key < search_node.key:
+                search_node = search_node.left
+            else:
+                search_node = search_node.right
+        return False
+
+    def min(self):
+        if self.root is None:
+            return None
+
+        search_node = self.root
+        while search_node.left is not None:
+            search_node = search_node.left
+        return search_node
+
+    def max(self):
+        if self.root is None:
+            return None
+
+        search_node = self.root
+        while search_node.right is not None:
+            search_node = search_node.right
+        return search_node
 
     def show(self):
         self.__go(self.root)
@@ -88,10 +139,10 @@ class BinarySearchTree:
         if node.right:
             self.__go(node.right)
 
-
 def main():
     bst = BinarySearchTree()
     # bst.show()
+    print(bst.max())
     bst.insert(Node(10))
     # bst.show()
     bst.insert(Node(4))
@@ -105,8 +156,11 @@ def main():
     bst.insert(Node(5))
     # bst.show()
     bst.insert(Node(3))
-    bst.show()
+    # bst.show()
+    bst.insert((Node(20)))
+    print(bst.max().key)
 
+    # print(bst.contains(9))
 
 if __name__ == "__main__":
     main()
